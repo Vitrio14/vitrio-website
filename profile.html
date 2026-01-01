@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Profilo Utente | Vitrio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #2b0b4b, #05050a);
+      color: #f5f5ff;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background .4s ease, color .4s ease;
+    }
+
+/* Footer identico all'index */
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 40px;
+  font-size: 13px;
+  width: 100%;
+}
+
+/* Footer sempre in fondo */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
+
+
+
+    #bgParticles {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      transition: background .4s ease;
+    }
+
+    header {
+      padding: 16px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10,10,20,0.9);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      transition: background .4s ease, border-color .4s ease;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-area img {
+      height: 52px;
+      border-radius: 14px;
+      filter: drop-shadow(0 0 6px #a970ff);
+      animation: logoFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes logoFloat {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .logo-title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-area h1 {
+      font-size: 20px;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #ffd6ff;
+      transition: color .4s ease;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      background: rgba(255,78,205,0.1);
+      border: 1px solid rgba(255,78,205,0.4);
+      color: #ffb0f0;
+      transition: all .4s ease;
+    }
+
+    .back-btn {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(90deg, #a970ff, #ff4ecd);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(0,0,0,.7);
+      transition: .3s ease;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(255,78,205,.9);
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(270px, 340px) 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .panel {
+      background: rgba(15,15,30,0.95);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 18px 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,.5);
+      backdrop-filter: blur(6px);
+      transition: background .4s ease, color .4s ease, border-color .4s ease;
+    }
+
+    .user-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #a970ff;
+      box-shadow: 0 0 15px rgba(169,112,255,0.7);
+    }
+
+    .user-name { font-size:20px;font-weight:700; }
+    .user-id { font-size:13px;opacity:.8; }
+
+    .status-pill {
+      display:inline-block;
+      padding:3px 10px;
+      border-radius:999px;
+      font-size:11px;
+      letter-spacing:.12em;
+      background:rgba(88,101,242,.2);
+      border:1px solid rgba(88,101,242,.6);
+      color:#cdd3ff;
+    }
+
+    .info-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(140px,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .info-item {
+      background:rgba(255,255,255,0.03);
+      border-radius:10px;
+      padding:8px 10px;
+      font-size:13px;
+      transition:background .4s ease;
+    }
+
+    .info-label { font-size:11px;opacity:.7;margin-bottom:3px; }
+
+    .badge-row { margin-top:14px;display:flex;flex-wrap:wrap;gap:6px; }
+
+    .badge {
+      font-size:11px;padding:4px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.04);
+      transition:background .4s,border-color .4s ease;
+    }
+
+    .sections-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+    }
+
+    .section-card {
+      background: rgba(30,20,45,0.7);
+      border-radius:14px;
+      padding:16px;
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(6px);
+      transition:.4s ease;
+    }
+
+    .section-card h3 {
+      margin: 0 0 6px;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .access-ok {
+      color: #7CFF9C;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    /* Light theme */
+    body.light-theme {
+      background:#f5f5f7 !important;
+      color:#111;
+    }
+  </style>
+</head>
+
+<body>
+<!-- Bottone Tema -->
+<button id="themeToggle"
+  style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: #a970ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 999999;
+    box-shadow: 0 0 12px rgba(0,0,0,.5);
+    font-size: 14px;
+  ">
+  🌓 Tema
+</button>
+
+<!-- Canvas Sfondo -->
+<canvas id="bgParticles"></canvas>
+
+<header>
+  <div class="logo-area">
+    <img src="logo.png" alt="Logo">
+    <div class="logo-title-wrapper">
+      <h1>Vitrio</h1>
+      <span class="tag">Area Profilo</span>
+    </div>
+  </div>
+
+  <button class="back-btn" onclick="window.location.href='index.html'">⬅ Torna al sito</button>
+</header>
+
+<main>
+  <section class="panel">
+    <div class="user-header">
+      <img id="avatar" class="user-avatar" src="logo.png">
+      <div>
+        <div id="username" class="user-name">Caricamento...</div>
+        <div id="userid" class="user-id"></div>
+        <span id="statusPill" class="status-pill">Discord Linked</span>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-label">Global Name</div>
+        <div id="globalName"></div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-label">Account ID</div>
+        <div id="accountId"></div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-label">Creato il</div>
+        <div id="createdAt"></div>
+      </div>
+
+      <div class="info-item">
+        <div class="info-label">Entrato nel server</div>
+        <div id="joinedAt"></div>
+      </div>
+    </div>
+
+    <div id="badgeRow" class="badge-row"></div>
+  </section>
+
+  <section class="panel">
+    <div id="loadingMsg" class="loading">Caricamento permessi e ruoli...</div>
+    <div id="sectionsGrid" class="sections-grid" style="display:none;"></div>
+  </section>
+</main>
+
+<footer>
+  © 2025 Vitrio - Tutti i diritti riservati
+</footer>
+
+<!-- SCRIPT PARTICELLE -->
+<script>
+(function() {
+  const canvas = document.getElementById("bgParticles");
+  const ctx = canvas.getContext("2d");
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const p = Array.from({length: 40}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*2+1,
+    s: Math.random()*0.8+0.3
+  }));
+
+  function loop() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "rgba(169,112,255,.4)";
+    p.forEach(o=>{
+      ctx.beginPath();
+      ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+      ctx.fill();
+      o.y += o.s;
+      if (o.y > canvas.height) {
+        o.y = -5;
+        o.x = Math.random()*canvas.width;
+      }
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+
+<!-- CURSORE GLOW -->
+<div id="cursorGlow"></div>
+<style>
+#cursorGlow {
+  position: fixed;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(169,112,255,.5);
+  box-shadow: 0 0 18px rgba(169,112,255,.9);
+  pointer-events:none;
+  transform: translate(-50%,-50%);
+  transition: .08s linear;
+  z-index:999999;
+}
+</style>
+<script>
+const glow = document.getElementById("cursorGlow");
+document.addEventListener("mousemove", e => {
+  glow.style.left = e.clientX+"px";
+  glow.style.top = e.clientY+"px";
+});
+</script>
+
+<!-- SCRIPT TEMA -->
+<script>
+const themeToggle = document.getElementById("themeToggle");
+
+if (localStorage.getItem("profile_theme") === "light") {
+  document.body.classList.add("light-theme");
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light-theme");
+
+  localStorage.setItem(
+    "profile_theme",
+    document.body.classList.contains("light-theme") ? "light" : "dark"
+  );
+});
+</script>
+<script>
+/* =====================================================================================
+   CONFIG
+===================================================================================== */
+const DISCORD_TOKEN = localStorage.getItem("discord_access_token");
+const GUILD_ID = "821024627391463504"; 
+
+if (!DISCORD_TOKEN) {
+  alert("Devi effettuare l'accesso con Discord.");
+  window.location.href = "index.html";
+}
+
+/* =====================================================================================
+   RUOLI + CATEGORIE
+===================================================================================== */
+const ROLE_DATA = {
+  "1431022260923273297": { name: "Vitrio (Owner)", color: "#ffa000", category: "Staff Zone", permissions: ["Accesso totale", "Admin"] },
+  "1008168835381203064": { name: "Responsabile Staff", color: "#00ffdc", category: "Staff Zone", permissions: ["Gestione Staff", "Moderazione completa"] },
+  "821028322087272508": { name: "Moderatore", color: "#007bff", category: "Staff Zone", permissions: ["Kick", "Ban", "Moderazione Chat"] },
+  "1435034819233845309": { name: "Helper", color: "#2ecc71", category: "Staff Zone", permissions: ["Supporto ticket"] },
+  "1008168246958112778": { name: "Mod Chat Twitch", color: "#00dcff", category: "Twitch Zone", permissions: ["Moderazione Twitch"] },
+  "821028838947160114": { name: "Discord Manager", color: "#e91e63", category: "Staff Zone", permissions: ["Gestione Discord"] },
+
+  "1006332851656065054": { name: "Twitch Sub Vitrio", color: "#71368a", category: "Sub Zone", permissions: ["Contenuti Sub"] },
+  "1006332851656065055": { name: "Sub Tier 1", color: "#71368a", category: "Sub Zone", permissions: ["Contenuti Tier 1"] },
+  "1006332851656065056": { name: "Sub Tier 2", color: "#71368a", category: "Sub Zone", permissions: ["Contenuti Tier 2"] },
+  "1006332851656065057": { name: "Sub Tier 3", color: "#71368a", category: "Sub Zone", permissions: ["Contenuti Tier 3"] },
+
+  "1009868971786371204": { name: "Top Gift 1", color: "#71368a", category: "Donator Zone", permissions: ["Top Gift Livello 1"] },
+  "1009868972746874960": { name: "Top Gift 2", color: "#71368a", category: "Donator Zone", permissions: ["Top Gift Livello 2"] },
+  "1009868973661229176": { name: "Top Gift 3", color: "#71368a", category: "Donator Zone", permissions: ["Top Gift Livello 3"] },
+
+  "1009844106224214168": { name: "Top Cheer 1", color: "#71368a", category: "Donator Zone", permissions: ["Top Cheer Livello 1"] },
+  "1009869680112046080": { name: "Top Cheer 2", color: "#71368a", category: "Donator Zone", permissions: ["Top Cheer Livello 2"] },
+  "1009869682947403836": { name: "Top Cheer 3", color: "#71368a", category: "Donator Zone", permissions: ["Top Cheer Livello 3"] },
+
+  "1009784349471813743": { name: "Top Donatore", color: "#71368a", category: "Donator Zone", permissions: ["Livello Donatore Elite"] },
+  "1009870047897976843": { name: "Donatore", color: "#71368a", category: "Donator Zone", permissions: ["Donatore Supporter"] },
+  "1011296421267386529": { name: "Cheer", color: "#71368a", category: "Donator Zone", permissions: ["Cheer"] },
+
+  "821031156861894666": { name: "VIP", color: "#ff00e6", category: "VIP Zone", permissions: ["Accesso VIP"] },
+  "1017039797287657473": { name: "Streamer Partner", color: "#a200ff", category: "Partner Zone", permissions: ["Accesso Partner"] },
+  "821029775475867648": { name: "Streamer", color: "#a200ff", category: "Twitch Zone", permissions: ["Accesso Streamer"] },
+  "1017039789834371102": { name: "Partner", color: "#a200ff", category: "Partner Zone", permissions: ["Accesso Partner"] },
+
+  "859419416160632842": { name: "Team Vitrio", color: "#f1c40f", category: "Team Zone", permissions: ["Accesso Team Privato"] },
+  "821030119552319489": { name: "Follow", color: "#ff5706", category: "Community Zone", permissions: ["Supporter Base"] },
+  "866718824190312492": { name: "Server Booster", color: "#f47fff", category: "Booster Zone", permissions: ["Perks Booster"] }
+};
+
+/* =====================================================================================
+   LOAD USER
+===================================================================================== */
+
+function getCreationDateFromSnowflake(id) {
+  const discordEpoch = 1420070400000;
+  return new Date(Number(id) / 4194304 + discordEpoch);
+}
+
+
+async function loadUser() {
+  const res = await fetch("https://discord.com/api/users/@me", {
+    headers: { Authorization: `Bearer ${DISCORD_TOKEN}` }
+  });
+
+  const user = await res.json();
+
+  // Nome / ID
+  document.getElementById("username").textContent = user.username;
+  document.getElementById("userid").textContent = "ID: " + user.id;
+  document.getElementById("globalName").textContent = user.global_name ?? "-";
+  document.getElementById("accountId").textContent = user.id;
+
+  // Avatar
+  document.getElementById("avatar").src =
+    `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+
+  // DATA CREAZIONE ACCOUNT
+  const created = getCreationDateFromSnowflake(user.id);
+  document.getElementById("createdAt").textContent =
+    created.toLocaleDateString("it-IT");
+}
+
+
+async function loadRoles() {
+  const loading = document.getElementById("loadingMsg");
+  const badgeRow = document.getElementById("badgeRow");
+  const grid = document.getElementById("sectionsGrid");
+
+  try {
+    // GET USER
+    const userRes = await fetch("https://discord.com/api/users/@me", {
+      headers: { Authorization: `Bearer ${DISCORD_TOKEN}` }
+    });
+    const user = await userRes.json();
+
+    // GET MEMBER DATA (RUOLI)
+    const memberRes = await fetch(
+      `https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`,
+      { headers: { Authorization: `Bearer ${DISCORD_TOKEN}` } }
+    );
+
+    if (!memberRes.ok) {
+      console.error("Errore API Discord:", await memberRes.text());
+      loading.textContent = "Impossibile caricare i ruoli (Discord API 404).";
+      return;
+    }
+
+    const member = await memberRes.json();
+    
+    // DATA ENTRATA NEL SERVER
+if (member.joined_at) {
+  const joinedDate = new Date(member.joined_at);
+  document.getElementById("joinedAt").textContent =
+    joinedDate.toLocaleDateString("it-IT");
+}
+
+    if (!member.roles) {
+      loading.textContent = "Nessun ruolo trovato per questo utente.";
+      return;
+    }
+
+    const userRoles = member.roles;
+
+    loading.style.display = "none";
+    grid.style.display = "grid";
+
+    // GRUPPI PER CATEGORIA
+    const grouped = {};
+
+    userRoles.forEach(roleId => {
+      const r = ROLE_DATA[roleId];
+      if (!r) return;
+
+      // Badge
+      const b = document.createElement("span");
+      b.className = "badge";
+      b.textContent = r.name;
+      b.style.color = r.color;
+      b.style.borderColor = r.color;
+      badgeRow.appendChild(b);
+
+      // Categorie
+      if (!grouped[r.category]) grouped[r.category] = [];
+      grouped[r.category].push(r);
+    });
+
+    // CREA BOX ACCESSO
+    Object.entries(grouped).forEach(([category, roles]) => {
+      roles.forEach(role => {
+        const card = document.createElement("div");
+        card.className = "section-card";
+        card.style.borderColor = role.color;
+
+        const h3 = document.createElement("h3");
+        h3.textContent = `${category} – ${role.name}`;
+        h3.style.color = role.color;
+
+        const access = document.createElement("div");
+        access.className = "access-ok";
+        access.textContent = "✓ Accesso Garantito";
+
+        const ul = document.createElement("ul");
+        ul.style.paddingLeft = "20px";
+
+        role.permissions.forEach(p => {
+          const li = document.createElement("li");
+          li.textContent = p;
+          ul.appendChild(li);
+        });
+
+        card.appendChild(h3);
+        card.appendChild(access);
+        card.appendChild(ul);
+        grid.appendChild(card);
+      });
+    });
+
+  } catch (err) {
+    console.error("Errore caricamento ruoli:", err);
+    loading.textContent = "Errore tecnico nel caricare i ruoli.";
+  }
+}
+
+
+/* =====================================================================================
+   START
+===================================================================================== */
+loadUser();
+loadRoles();
+</script>
+</body>
+</html>
