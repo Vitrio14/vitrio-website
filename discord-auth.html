@@ -19,7 +19,7 @@ if (!code) {
 }
 
 // 2. Invia il codice al backend per scambiarlo con un access_token
-fetch("https://vitrio-discord-backend.onrender.com/discord/token", {
+fetch("http://185.229.236.206:10000/discord/token", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ code })
@@ -48,3 +48,4 @@ fetch("https://vitrio-discord-backend.onrender.com/discord/token", {
 
 </body>
 </html>
+
