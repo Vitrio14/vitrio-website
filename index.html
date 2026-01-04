@@ -1,818 +1,355 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vitrio TTV • Live, Gaming & Community</title>
+
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vitrio | Home</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(180deg, #0d0d12, #1a1a24);
-      color: white;
-      overflow-x: hidden;
-    }
+  <meta name="description" content="Vitrio TTV: live su Twitch, FiveM e gaming, community Discord, clip & VOD. Entra, guarda la live e scopri il bot.">
+  <meta name="theme-color" content="#0c0c18">
 
-    html {
-      scroll-behavior: smooth;
-    }
+  <meta property="og:title" content="Vitrio TTV">
+  <meta property="og:description" content="Live, Gaming & Funny. Community pronta a fare la clip del secolo.">
+  <meta property="og:type" content="website">
 
-    /* HEADER */
-    header {
-      padding: 16px 40px;
-      background: rgba(20, 20, 30, 0.7);
-      backdrop-filter: blur(10px);
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #2c2c2c;
-      transition: background 0.3s, box-shadow 0.3s;
-    }
+  <link rel="preload" href="logo.png" as="image">
 
-    #logo {
-      height: 52px;
-      filter: drop-shadow(0 0 6px #a970ff);
-      animation: logoFloat 3s ease-in-out infinite;
-      cursor: pointer;
-    }
-
-    @keyframes logoFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-
-    nav {
-      display:flex;
-      gap:18px;
-      justify-content:center;
-      width:100%;
-      flex-wrap:wrap;
-      text-align:center;
-      align-items:center;
-    }
-
-    nav a {
-      color: #c9a7ff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: white;
-      text-shadow: 0 0 8px #a970ff;
-    }
-
-    /* LINK ADMIN NASCOSTO */
-    .admin-link {
-      display: none;
-      opacity: 0;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid #ff4ecd;
-      color: #ffb3f0;
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-    }
-
-    .admin-link.show {
-      display: inline-block;
-      opacity: 1;
-      animation: adminReveal 0.8s ease-out;
-    }
-
-    @keyframes adminReveal {
-      0% { transform: scale(0.5) rotate(-10deg); opacity: 0; box-shadow: 0 0 0 rgba(255,78,205,0); }
-      60% { transform: scale(1.05) rotate(2deg); opacity: 1; box-shadow: 0 0 18px rgba(255,78,205,0.7); }
-      100% { transform: scale(1) rotate(0); box-shadow: 0 0 10px rgba(255,78,205,0.4); }
-    }
-
-    /* HERO */
-    .hero {
-      padding: 150px 20px 100px;
-      text-align: center;
-      background: radial-gradient(circle at top, rgba(169,112,255,0.4), transparent 60%);
-    }
-
-    .hero h2 {
-      font-size: 52px;
-      margin: 0;
-      text-shadow: 0 0 20px black;
-      animation: slideDown 1.2s ease;
-    }
-
-    .hero span.highlight {
-      color: #ff4ecd;
-      text-shadow: 0 0 12px rgba(255,78,205,0.7);
-    }
-
-    .hero p {
-      font-size: 20px;
-      margin-top: 15px;
-      opacity: 0;
-      animation: fadeIn 1.4s ease forwards;
-      animation-delay: 0.5s;
-    }
-
-    @keyframes slideDown {
-      from { transform: translateY(-40px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .button {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 14px 30px;
-      background: linear-gradient(90deg, #a970ff, #ff4ecd);
-      color: white;
-      border-radius: 999px;
-      text-decoration: none;
-      font-size: 18px;
-      font-weight: bold;
-      box-shadow: 0 0 14px rgba(169,112,255,0.8);
-      transition: 0.25s;
-    }
-
-    .button:hover {
-      transform: scale(1.07) translateY(-1px);
-      box-shadow: 0 0 24px rgba(255,78,205,0.9);
-    }
-
-    /* SECTION GENERICA */
-    .section {
-      padding: 80px 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    .section h2 {
-      text-align: center;
-      font-size: 32px;
-      margin-bottom: 30px;
-      text-shadow: 0 0 10px #a970ff;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-weight: 700;
-    }
-
-    .section-subtitle {
-      text-align: center;
-      margin-top: -18px;
-      margin-bottom: 30px;
-      font-size: 14px;
-      opacity: 0.7;
-    }
-
-    /* CARDS */
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 25px;
-    }
-
-    .card {
-      background: #18181b;
-      padding: 22px;
-      border-radius: 12px;
-      border: 1px solid #2c2c2c;
-      box-shadow: 0 0 12px rgba(169,112,255,0.18);
-      transition: 0.25s;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 22px rgba(169,112,255,0.4);
-    }
-
-    /* SOCIAL */
-    .social-links a {
-      color: #c9a7ff;
-      text-decoration: none;
-      font-size: 22px;
-      margin: 10px;
-      display: inline-block;
-      transition: 0.25s;
-    }
-
-    .social-links a:hover {
-      color: white;
-      transform: scale(1.15) translateY(-1px);
-      text-shadow: 0 0 10px #a970ff;
-    }
-
-    /* CONTACT FORM */
-    .contact-form {
-      max-width: 600px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .contact-form input,
-    .contact-form textarea {
-      padding: 12px 14px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      background: #101018;
-      color: white;
-      font-size: 16px;
-      outline: none;
-      transition: border 0.2s, box-shadow 0.2s;
-    }
-
-    .contact-form input:focus,
-    .contact-form textarea:focus {
-      border-color: #a970ff;
-      box-shadow: 0 0 10px rgba(169,112,255,0.6);
-    }
-
-    .contact-form textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    /* Fix bottone Invia del form */
-    .contact-form button {
-      padding: 12px 26px;
-      font-size: 16px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #a970ff, #ff4ecd);
-      color: white;
-      border: none;
-      cursor: pointer;
-      align-self: flex-end;
-      box-shadow: 0 0 10px rgba(169,112,255,0.6);
-      transition: 0.25s ease;
-    }
-
-    .contact-form button:hover {
-      transform: scale(1.07);
-      box-shadow: 0 0 20px rgba(255,78,205,1);
-    }
-
-    /* PROFILO DISCORD */
-    .profile-box {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      position: relative;
-    }
-
-    /* Profilo Discord nel nav comportato come un link */
-.profile-box {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  color: #c9a7ff;
-  transition: 0.3s;
-}
-
-.profile-box:hover {
-  color: white;
-  text-shadow: 0 0 8px #a970ff;
-  transform: translateY(-1px);
-}
-
-.profile-box img {
-  transition: 0.3s;
-  box-shadow: 0 0 6px transparent;
-}
-
-.profile-box:hover img {
-  box-shadow: 0 0 10px #a970ff;
-}
-
-
-    .profile-box img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-    }
-
-    .profile-box span {
-      font-size: 14px;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-
-    .profile-dropdown {
-      position: absolute;
-      top: 38px;
-      right: 0;
-      background: #1e1e2f;
-      border: 1px solid #444;
-      padding: 8px 0;
-      border-radius: 10px;
-      display: none;
-      min-width: 160px;
-      z-index: 9999;
-    }
-
-    .profile-dropdown a {
-      display: block;
-      padding: 8px 12px;
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-
-    .profile-dropdown a:hover {
-      background: #333;
-    }
-
-    /* FAQ */
-    .faq-item {
-      background: #18181b;
-      border-radius: 10px;
-      border: 1px solid #2c2c2c;
-      margin-bottom: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .faq-item:hover {
-      box-shadow: 0 0 18px rgba(169,112,255,0.4);
-    }
-
-    .faq-question {
-      padding: 16px 20px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .faq-answer {
-      max-height: 0;
-      opacity: 0;
-      padding: 0 20px 0;
-      font-size: 15px;
-      line-height: 1.5;
-      transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-    }
-
-    .faq-item.open .faq-answer {
-      max-height: 200px;
-      opacity: 1;
-      padding: 0 20px 16px;
-    }
-
-    /* LIGHT THEME VARIANT */
-    body.light-theme {
-      background: #f5f5f7;
-      color: #111;
-    }
-    body.light-theme header {
-      background: rgba(255,255,255,0.9);
-      border-bottom-color: #ddd;
-    }
-    body.light-theme .card,
-    body.light-theme .faq-item {
-      background: #ffffff;
-      border-color: #ddd;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    body.light-theme .contact-form input,
-    body.light-theme .contact-form textarea {
-      background: #ffffff;
-      color: #111;
-      border-color: #ccc;
-    }
-
-    /* BACK TO TOP BUTTON */
-    #backToTop {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: none;
-      background: #a970ff;
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 0 12px rgba(0,0,0,0.6);
-      display: none;
-      z-index: 2000;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #888;
-      border-top: 1px solid #2c2c2c;
-      margin-top: 40px;
-      font-size: 13px;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-      nav {
-        margin-top: 8px;
-      }
-      .hero h2 {
-        font-size: 36px;
-      }
-      .hero p {
-        font-size: 18px;
-      }
-      .section {
-        padding: 60px 16px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/styles.css">
 </head>
+
 <body>
-  <header>
-    <img id="logo" src="logo.png" alt="Logo Vitrio TTV">
+  <a class="skip" href="#contenuto">Salta al contenuto</a>
 
-    <nav>
-      <a href="#live">Live</a>
-      <a href="#vod">VOD</a>
-      <a href="#schedule">Programma</a>
-      <a href="#donazioni">Donazioni</a>
-      <a href="#social">Social</a>
-      <a href="#faq">FAQ</a>
-      <a href="#about">About</a>
-      <a href="#contatti">Contatti</a>
-      <a href="admin.html" id="adminLink" class="admin-link">Area Admin</a>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Vai all'inizio">
+        <img src="logo.png" alt="Logo Vitrio TTV" width="44" height="44">
+        <div>
+          <strong>Vitrio TTV</strong>
+          <span>Live • Gaming • Funny</span>
+        </div>
+      </a>
 
-      <!-- Login Discord stile nav -->
-      <a href="javascript:void(0)" id="discordLogin">Login Discord</a>
-    </nav>
+      <nav class="nav" aria-label="Navigazione">
+        <a href="#live">Live</a>
+        <a href="#vod">Clip & VOD</a>
+        <a href="#program">Programma</a>
+        <a href="#bot">Bot</a>
+        <a href="https://docs.vitriotv.com/" target="_blank" rel="noreferrer noopener" class="cta">Docs</a>
+        <a href="#supporto">Supporta</a>
+        <a href="#contatti">Contatti</a>
+      </nav>
+
+      <button id="hamburger" class="hamburger" aria-controls="mobilePanel" aria-expanded="false" aria-label="Apri menu">
+        ☰
+      </button>
+    </div>
+
+    <div class="container mobile-panel" id="mobilePanel" hidden>
+      <div class="row">
+        <a href="#live">Live</a>
+        <a href="#vod">Clip & VOD</a>
+        <a href="#program">Programma</a>
+        <a href="#bot">Bot</a>
+        <a href="https://docs.vitriotv.com/" target="_blank" rel="noreferrer noopener">Docs</a>
+        <a href="#supporto">Supporta</a>
+        <a href="#contatti">Contatti</a>
+      </div>
+    </div>
   </header>
 
-  <section class="hero">
-    <h2>Benvenuti nel mondo di <span class="highlight">Vitrio</span></h2>
-    <p>Gameplay, show, emozioni e una community pronta a fare la clip del secolo.</p>
-    <a href="#live" class="button">Guarda la Live</a>
-  </section>
+  <main id="contenuto">
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div class="hero-card">
+          <div class="muted kbd">vitrio_ttv • Twitch Partner-ready vibes</div>
+          <h1 style="margin-top:14px">Benvenuto nel mondo di <span class="grad">Vitrio</span></h1>
+          <p>
+            Gameplay, show, emozioni e una community che vive di clip. Entra in live, beccati i momenti migliori
+            e scopri i comandi del bot per rendere la chat ancora più fuori controllo (in senso buono).
+          </p>
 
-  <section id="live" class="section">
-    <h2>Live Streaming</h2>
-    <p class="section-subtitle">Direttamente da Twitch: <strong>vitrio_ttv</strong></p>
-    <div style="margin-top:20px; text-align:center;">
-      <iframe
-        src="https://player.twitch.tv/?channel=vitrio_ttv&parent=vitriotv.com"
-        frameborder="0"
-        allowfullscreen="true"
-        scrolling="no"
-        height="350"
-        width="600"
-        style="max-width:100%;border-radius: 12px; box-shadow: 0 0 15px #a970ff;">
-      </iframe>
-    </div>
-  </section>
+          <div class="hero-actions">
+            <a class="btn primary" href="#live">
+              Guarda la live
+              <span class="pill">Twitch</span>
+            </a>
+            <a class="btn" href="https://discord.com/invite/w5uNknMb4m" target="_blank" rel="noreferrer noopener">
+              Entra su Discord
+              <span class="pill">Community</span>
+            </a>
+            <a class="btn" href="https://docs.vitriotv.com/" target="_blank" rel="noreferrer noopener">
+              Bot Docs
+              <span class="pill">Guida</span>
+            </a>
+            <button class="btn" id="copyLink" type="button">
+              Copia link sito
+              <span class="pill">Share</span>
+            </button>
+          </div>
+        </div>
 
-  <section id="schedule" class="section">
-    <h2>Programma Live</h2>
-    <p class="section-subtitle">Resta aggiornato su quando ci vediamo in chat.</p>
-    <div class="cards">
-      <div class="card"><h3>🎮 Tutti i giorni o quasi!</h3><p>21:00 - FiveM, e tanto altro!</p></div>
-    </div>
-  </section>
-
-  <section id="social" class="section">
-    <h2>Seguimi sui Social</h2>
-    <p class="section-subtitle">Clip, annunci, meme e tutto quello che non vedi in live.</p>
-    <div class="social-links" style="text-align:center;">
-      <a href="https://www.twitch.tv/vitrio_ttv/about" target="_blank">Twitch</a>
-      <a href="https://www.instagram.com/_vitrio_/" target="_blank">Instagram</a>
-      <a href="https://discord.com/invite/w5uNknMb4m" target="_blank">Discord</a>
-    </div>
-  </section>
-
-  <section id="about" class="section">
-    <h2>Chi Sono</h2>
-    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:30px;justify-content:center;">
-      <img src="logo.png" alt="avatar" style="width:180px;filter:drop-shadow(0 0 10px #a970ff);border-radius:20px;">
-      <p style="max-width:600px;font-size:18px;line-height:1.7;">
-        Ehi sono <strong>Vitrio</strong>, un ragazzo vivace con tanta voglia di divertirmi e far divertire!
-        Qui trovi un po’ di tutto: Roleplay, giochi vari, momenti di pura follia e un sacco di good vibes.
-        Niente copioni, solo energia vera, risate e community, vieni a far parte della famiglia!.
-      </p>
-    </div>
-  </section>
-
-  <section id="donazioni" class="section">
-    <h2>Supporta il Canale</h2>
-    <p class="section-subtitle">Se ti diverti in live, puoi supportare il canale in tanti modi ❤️</p>
-    <div style="text-align:center;margin-top:20px;">
-      <a href="https://streamelements.com/vitrio_ttv/tip" class="button" target="_blank">Dona Ora</a>
-      <a href="https://www.twitch.tv/subs/vitrio_ttv" class="button" target="_blank">Abbonati ora</a>
-      <p style="margin-top:12px;font-size:14px;opacity:0.7;">
-        Anche un semplice follow, un messaggio in chat o condividere la live fa la differenza!
-      </p>
-    </div>
-  </section>
-
-  <section id="vod" class="section">
-    <h2>Ultime Clip & VOD</h2>
-    <p class="section-subtitle">Alcuni momenti che la chat non dimenticherà facilmente.</p>
-    <div style="margin-top:20px; text-align:center;">
-      <!-- Clip 1 -->
-<iframe
-  src="https://player.twitch.tv/?video=2640483889&parent=vitriotv.com"
-        frameborder="0" 
-        allowfullscreen="true"
-        scrolling="no"
-        height="350"
-        width="600"
-        style="max-width:100%;border-radius: 12px; box-shadow: 0 0 15px #a970ff;">
-</iframe>
-    </div>
-  </section>
-
-  <section id="contatti" class="section">
-    <h2>Contattami</h2>
-    <p class="section-subtitle">Collab, proposte, business o semplicemente un saluto.</p>
-    <form class="contact-form">
-      <input type="text" name="nome" placeholder="Il tuo nome" required>
-      <input type="email" name="email" placeholder="La tua email" required>
-      <textarea name="messaggio" placeholder="Scrivi il tuo messaggio..." required></textarea>
-      <button type="submit">Invia</button>
-    </form>
-    <p style="margin-top:10px;font-size:13px;text-align:center;opacity:0.7;">
-      Il form usa moduli criptografati sicuri, i tuoi dati sono al sicuro!.
-    </p>
-  </section>
-
-  <section id="faq" class="section">
-    <h2>Domande Frequenti</h2>
-    <div>
-      <div class="faq-item">
-        <div class="faq-question">📅 Quando streammi di solito? <span>+</span></div>
-        <div class="faq-answer">
-          Streammo principalmente la sera e quando posso.
-          A volte però partono anche live extra a sorpresa, quindi tieni d'occhio i social!
+        <div class="hero-visual" aria-hidden="true">
+          <img src="assets/hero.webp" alt="" loading="lazy" decoding="async">
         </div>
       </div>
-      <div class="faq-item">
-        <div class="faq-question">🎮 Che giochi porti in live? <span>+</span></div>
-        <div class="faq-answer">
-          Porto principalmente FiveM, ma gioco anche a giochi più competitivi o tranquilli! Seguimi per scoprire quali.
+    </section>
+
+    <section class="section" id="live">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Live</h2>
+            <p class="sub">Direttamente da Twitch • <strong>vitrio_ttv</strong></p>
+          </div>
+          <span class="kbd">Tip: fullscreen su desktop</span>
+        </div>
+
+        <div class="embed">
+          <div class="ratio">
+            <iframe
+              title="Live Twitch - Vitrio"
+              src="https://player.twitch.tv/?channel=vitrio_ttv&parent=vitriotv.com"
+              allowfullscreen="true"
+              loading="lazy">
+            </iframe>
+          </div>
         </div>
       </div>
-      <div class="faq-item">
-        <div class="faq-question">🤝 Posso giocare con te in live? <span>+</span></div>
-        <div class="faq-answer">
-          Certo! Durante le serate community puoi entrare in lobby, partecipare ai giochi e magari
-          finire anche in qualche clip epica.
+    </section>
+
+    <section class="section" id="program">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Programma</h2>
+            <p class="sub">Quando ci vediamo in chat</p>
+          </div>
+          <a class="btn" href="#contatti">Proponi una collab</a>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <h3>🎮 Serate principali</h3>
+            <p>Di solito la sera, con focus su <strong>FiveM</strong> + rotazione di giochi. Orario indicativo: <strong>21:00</strong>.</p>
+            <div class="meta">
+              <span class="tag">FiveM</span>
+              <span class="tag">Roleplay</span>
+              <span class="tag">Variety</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>⚡ Live extra</h3>
+            <p>Capitano a sorpresa: eventi, community, challenge. Segui i social per non perderle.</p>
+            <div class="meta">
+              <span class="tag">Surprise</span>
+              <span class="tag">Eventi</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>🎯 Obiettivo</h3>
+            <p>Zero copione. Solo energia vera, meme e momenti “clip-this”.</p>
+            <div class="meta">
+              <span class="tag">Funny</span>
+              <span class="tag">Good vibes</span>
+            </div>
+          </article>
         </div>
       </div>
-      <div class="faq-item">
-        <div class="faq-question">💸 Come posso supportare il canale? <span>+</span></div>
-        <div class="faq-answer">
-          Puoi supportare con follow, sub, donazioni, condividendo la live o invitando amici in
-          community. Ogni supporto, anche piccolo, è super apprezzato!
+    </section>
+
+    <section class="section" id="bot">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Bot & Docs</h2>
+            <p class="sub">Comandi, setup e guide (perfetto anche da mobile)</p>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <a class="btn primary" href="https://docs.vitriotv.com/" target="_blank" rel="noreferrer noopener">Apri Docs</a>
+            <button class="btn" id="themeToggle" type="button">🌓 Tema</button>
+          </div>
         </div>
+
+        <div class="two-col">
+          <div class="card" style="height:100%">
+            <h3>Quick start</h3>
+            <p>
+              Vuoi partire subito? Entra nelle Docs e segui la guida “Installazione”:
+              in pochi minuti hai permessi, comandi e configurazione ok.
+            </p>
+            <div class="meta">
+              <a class="btn" href="https://docs.vitriotv.com/" target="_blank" rel="noreferrer noopener">Vai alle guide</a>
+              <a class="btn" href="https://docs.vitriotv.com/" target="_blank" rel="noreferrer noopener">Lista comandi</a>
+            </div>
+          </div>
+
+          <div class="embed">
+            <div class="ratio">
+              <iframe
+                title="Vitrio Bot Docs"
+                src="https://docs.vitriotv.com/"
+                loading="lazy"
+                referrerpolicy="no-referrer">
+              </iframe>
+            </div>
+          </div>
+        </div>
+
+        <p class="muted" style="margin-top:12px; font-size:13px">
+          Se l’embed non si carica (alcuni browser bloccano iframe), usa il bottone “Apri Docs”.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="vod">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Clip & VOD</h2>
+            <p class="sub">Alcuni momenti che la chat non dimenticherà</p>
+          </div>
+          <a class="btn" href="https://www.twitch.tv/vitrio_ttv/videos" target="_blank" rel="noreferrer noopener">Tutti i VOD</a>
+        </div>
+
+        <div class="embed">
+          <div class="ratio">
+            <iframe
+              title="VOD Twitch"
+              src="https://player.twitch.tv/?video=2640483889&parent=vitriotv.com"
+              allowfullscreen="true"
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="supporto">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Supporta il canale</h2>
+            <p class="sub">Se ti diverti in live, puoi dare una mano ❤️</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <h3>💜 Abbonati</h3>
+            <p>Sub su Twitch = emote + supporto diretto per portare più contenuti in live.</p>
+            <div class="meta">
+              <a class="btn primary" href="https://www.twitch.tv/subs/vitrio_ttv" target="_blank" rel="noreferrer noopener">Sub su Twitch</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>💸 Dona</h3>
+            <p>Se vuoi, puoi lasciare una tip tramite StreamElements.</p>
+            <div class="meta">
+              <a class="btn primary" href="https://streamelements.com/vitrio_ttv/tip" target="_blank" rel="noreferrer noopener">Dona ora</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>🚀 Il supporto più grande</h3>
+            <p>Follow, messaggio in chat, share della live: è quello che spinge davvero.</p>
+            <div class="meta">
+              <a class="btn" href="https://www.twitch.tv/vitrio_ttv" target="_blank" rel="noreferrer noopener">Apri Twitch</a>
+              <a class="btn" href="https://www.instagram.com/_vitrio_/" target="_blank" rel="noreferrer noopener">Instagram</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contatti">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Contatti</h2>
+            <p class="sub">Collab, proposte, business o semplicemente un saluto</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <form class="card" id="contactForm" style="margin:0">
+            <h3>Scrivimi</h3>
+            <p class="muted" style="margin-bottom:14px">Rispondo quando posso, ma rispondo 😄</p>
+
+            <label class="muted" for="nome">Nome</label>
+            <input id="nome" name="nome" required autocomplete="name"
+              style="width:100%;margin:6px 0 12px;padding:12px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.25);color:inherit">
+
+            <label class="muted" for="email">Email</label>
+            <input id="email" name="email" type="email" required autocomplete="email"
+              style="width:100%;margin:6px 0 12px;padding:12px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.25);color:inherit">
+
+            <label class="muted" for="messaggio">Messaggio</label>
+            <textarea id="messaggio" name="messaggio" required
+              style="width:100%;margin:6px 0 14px;min-height:120px;padding:12px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.25);color:inherit;resize:vertical"></textarea>
+
+            <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap">
+              <button class="btn primary" type="submit">Invia</button>
+              <a class="btn" href="mailto:info@vitriotv.com">Email diretta</a>
+            </div>
+            <p class="muted" style="margin:14px 0 0; font-size:12px">Messaggi salvati in modo sicuro (Firestore).</p>
+          </form>
+
+          <div class="card">
+            <h3>Social</h3>
+            <p class="muted">Seguimi per clip, annunci e meme.</p>
+            <div class="meta" style="margin-top:14px">
+              <a class="btn" href="https://www.twitch.tv/vitrio_ttv/about" target="_blank" rel="noreferrer noopener">Twitch</a>
+              <a class="btn" href="https://www.instagram.com/_vitrio_/" target="_blank" rel="noreferrer noopener">Instagram</a>
+              <a class="btn" href="https://discord.com/invite/w5uNknMb4m" target="_blank" rel="noreferrer noopener">Discord</a>
+            </div>
+
+            <div style="margin-top:18px" class="faq">
+              <details>
+                <summary>📅 Quando streammi di solito?</summary>
+                <div class="answer">Principalmente la sera e quando posso. Ogni tanto live extra a sorpresa: social & Discord sono il radar.</div>
+              </details>
+              <details>
+                <summary>🎮 Che giochi porti in live?</summary>
+                <div class="answer">FiveM spesso, ma anche titoli competitivi o chill. È un canale “variety”, quindi preparati.</div>
+              </details>
+              <details>
+                <summary>🤝 Posso giocare con te in live?</summary>
+                <div class="answer">Sì! Durante le serate community si entra in lobby, si gioca e spesso si finisce in clip.</div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container row">
+      <div>© <span id="year"></span> Vitrio TTV • Tutti i diritti riservati</div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="https://docs.vitriotv.com/" target="_blank" rel="noreferrer noopener">Docs</a>
+        <a href="https://www.twitch.tv/vitrio_ttv" target="_blank" rel="noreferrer noopener">Twitch</a>
+        <a href="admin.html" class="muted">Admin</a>
       </div>
     </div>
-  </section>
-
-  <footer>
-    © 2025 Vitrio - Tutti i diritti riservati
   </footer>
 
-  <!-- SCRIPT UI BASE -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const header = document.querySelector('header');
-      const logo = document.getElementById('logo');
-      const adminLink = document.getElementById('adminLink');
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div id="toastMsg"></div>
+    <button type="button" id="toastClose">Chiudi</button>
+  </div>
 
-      // Effetto scroll header
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          header.style.background = 'rgba(20,20,30,0.95)';
-          header.style.boxShadow = '0 0 20px rgba(0,0,0,0.7)';
-        } else {
-          header.style.background = 'rgba(20,20,30,0.7)';
-          header.style.boxShadow = 'none';
-        }
-      });
+  <script src="assets/app.js" defer></script>
 
-      // Smooth scroll
-      document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', e => {
-          const targetId = link.getAttribute('href').substring(1);
-          const target = document.getElementById(targetId);
-          if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-      });
-
-      // Tema light/dark
-      const themeToggle = document.createElement('button');
-      themeToggle.textContent = '🌓 Tema';
-      themeToggle.style.position = 'fixed';
-      themeToggle.style.bottom = '20px';
-      themeToggle.style.right = '20px';
-      themeToggle.style.padding = '10px 16px';
-      themeToggle.style.borderRadius = '10px';
-      themeToggle.style.background = '#a970ff';
-      themeToggle.style.color = 'white';
-      themeToggle.style.border = 'none';
-      themeToggle.style.cursor = 'pointer';
-      themeToggle.style.zIndex = '2000';
-      themeToggle.style.boxShadow = '0 0 12px rgba(0,0,0,0.6)';
-      document.body.appendChild(themeToggle);
-
-      themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('light-theme');
-      });
-
-      // Particle background
-      const canvas = document.createElement('canvas');
-      canvas.style.position = 'fixed';
-      canvas.style.top = 0;
-      canvas.style.left = 0;
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-      canvas.style.zIndex = '-1';
-      document.body.appendChild(canvas);
-      const ctx = canvas.getContext('2d');
-
-      function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      const particles = Array.from({ length: 70 }, () => ({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        r: Math.random() * 2 + 1,
-        s: Math.random() * 1 + 0.5
-      }));
-
-      function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'rgba(169,112,255,0.5)';
-        particles.forEach(p => {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
-          p.y += p.s;
-          if (p.y > window.innerHeight) {
-            p.y = -5;
-            p.x = Math.random() * window.innerWidth;
-          }
-        });
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      // FAQ toggle
-      document.querySelectorAll('.faq-question').forEach(q => {
-        q.addEventListener('click', () => {
-          const item = q.parentElement;
-          const isOpen = item.classList.contains('open');
-          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-          if (!isOpen) item.classList.add('open');
-        });
-      });
-
-      // Back to top button
-      const backToTop = document.createElement('button');
-      backToTop.id = 'backToTop';
-      backToTop.textContent = '↑ Top';
-      document.body.appendChild(backToTop);
-
-      backToTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      window.addEventListener('scroll', () => {
-        backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
-      });
-
-      // Easter egg: 10 click sul logo → mostra Area Admin
-      let logoClickCount = 0;
-      logo.addEventListener('click', () => {
-        logoClickCount++;
-        if (logoClickCount === 10) {
-          adminLink.classList.add('show');
-        }
-      });
-    });
-  </script>
-
-  <!-- LOGIN DISCORD + PROFILO -->
-  <script>
-    const DISCORD_CLIENT_ID = "1305192295590789130";
-    const DISCORD_REDIRECT = "https://vitriotv.com/discord-auth.html";
-    const DISCORD_SCOPES = "identify guilds guilds.members.read";
-
-
-    const loginBtnDiscord = document.getElementById("discordLogin");
-
-    if (loginBtnDiscord) {
-      loginBtnDiscord.addEventListener("click", () => {
-const url =
-  "https://discord.com/api/oauth2/authorize" +
-  `?client_id=${DISCORD_CLIENT_ID}` +
-  `&redirect_uri=${encodeURIComponent(DISCORD_REDIRECT)}` +
-  "&response_type=code" +
-  `&scope=${encodeURIComponent(DISCORD_SCOPES)}`;
-
-
-        window.location.href = url;
-      });
-    }
-
-    async function checkDiscordLogin() {
-      const token = localStorage.getItem("discord_access_token");
-      if (!token) return;
-
-      try {
-        const res = await fetch("https://discord.com/api/users/@me", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const user = await res.json();
-        if (!user.id) return;
-
-        // Nascondi pulsante login
-        if (loginBtnDiscord) loginBtnDiscord.style.display = "none";
-
-        // Crea box profilo
-        const nav = document.querySelector("nav");
-        const box = document.createElement("div");
-        box.className = "profile-box";
-        box.innerHTML = `
-          <img src="https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png" alt="avatar">
-          <span>${user.username}</span>
-          <div class="profile-dropdown" id="profileDropdown">
-            <a href="#" id="profileLink">Il mio profilo</a>
-            <a href="#" id="logoutDiscord">Logout</a>
-          </div>
-        `;
-        nav.appendChild(box);
-
-        const dropdown = box.querySelector("#profileDropdown");
-        const logoutBtn = box.querySelector("#logoutDiscord");
-        const profileLink = box.querySelector("#profileLink");
-
-        // apri/chiudi dropdown
-        box.addEventListener("click", () => {
-          dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        });
-
-        // chiudi cliccando fuori
-        document.addEventListener("click", (e) => {
-          if (!box.contains(e.target)) {
-            dropdown.style.display = "none";
-          }
-        });
-
-        // link profilo → profile.html
-        profileLink.addEventListener("click", (e) => {
-          e.preventDefault();
-          window.location.href = "profile.html";
-        });
-
-        // logout
-        logoutBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          localStorage.removeItem("discord_access_token");
-          window.location.reload();
-        });
-
-      } catch (err) {
-        console.error("Errore login Discord:", err);
-      }
-    }
-
-    checkDiscordLogin();
-  </script>
-
-  <!-- SCRIPT FIREBASE (SALVATAGGIO CONTATTI) -->
+  <!-- Firebase (salvataggio contatti) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -830,23 +367,24 @@ const url =
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const form = document.querySelector(".contact-form");
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // form
+    const form = document.getElementById("contactForm");
     if (form) {
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const nome = e.target.nome.value;
-        const email = e.target.email.value;
-        const messaggio = e.target.messaggio.value;
+        const nome = form.nome.value.trim();
+        const email = form.email.value.trim();
+        const messaggio = form.messaggio.value.trim();
+
+        if (!nome || !email || !messaggio) return;
 
         try {
-          await addDoc(collection(db, "messaggi"), {
-            nome,
-            email,
-            messaggio,
-            createdAt: serverTimestamp()
-          });
+          await addDoc(collection(db, "messaggi"), { nome, email, messaggio, createdAt: serverTimestamp() });
           alert("Messaggio inviato! Grazie ❤️");
-          e.target.reset();
+          form.reset();
         } catch (err) {
           console.error(err);
           alert("Si è verificato un errore. Riprova più tardi.");
@@ -854,44 +392,5 @@ const url =
       });
     }
   </script>
-  <!-- CURSORE GLOW VIOLA GLOBALE -->
-<div id="cursorGlow"></div>
-
-<style>
-  /* Nasconde il cursore originale */
-  * {
-    cursor: none !important;
-  }
-
-  /* Glow viola che segue il mouse */
-  #cursorGlow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    pointer-events: none;
-    background: rgba(169,112,255,0.55);
-    box-shadow: 0 0 18px rgba(169,112,255,0.9);
-    transform: translate(-50%, -50%);
-    transition: transform 0.07s linear;
-    z-index: 999999;
-  }
-</style>
-
-<script>
-  const glow = document.getElementById("cursorGlow");
-
-  document.addEventListener("mousemove", (e) => {
-    glow.style.left = e.clientX + "px";
-    glow.style.top = e.clientY + "px";
-  });
-</script>
-
 </body>
 </html>
-
-
-
-
