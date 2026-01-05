@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vitrio | Home</title>
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/favicon.png">
+
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
+  <link rel="stylesheet" href="assets/css/index.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <img id="logo" class="site-logo" src="assets/img/logo.png" alt="Logo Vitrio TTV">
+
+    <nav class="site-nav">
+      <a href="#hub">Community</a>
+      <a href="#live">Live</a>
+      <a href="#vod">VOD</a>
+      <a href="#schedule">Programma</a>
+      <a href="#donazioni">Donazioni</a>
+      <a href="#social">Social</a>
+      <a href="#faq">FAQ</a>
+      <a href="#about">About</a>
+      <a href="#contatti">Contatti</a>
+
+      <a href="admin.html" id="adminLink" class="admin-link">Area Admin</a>
+      <a href="javascript:void(0)" id="discordLogin">Login Discord</a>
+    </nav>
+  </header>
+
+  <!-- HERO PREMIUM -->
+  <section class="hero hero-premium">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">⚡ Community Hub • Omega Points • Discord</div>
+
+      <h2>Benvenuti nel mondo di <span class="highlight">Vitrio</span></h2>
+      <p>Entra nella community, sblocca perks, accumula Omega e vivi la live da protagonista.</p>
+
+      <div class="hero-cta">
+        <a href="javascript:void(0)" class="button" id="heroLoginBtn">Login Discord</a>
+        <a href="#live" class="button button-ghost">Guarda la Live</a>
+      </div>
+
+      <div class="hero-mini">
+        <div class="mini-pill" id="miniStatus">🔒 Non loggato</div>
+        <div class="mini-pill">💎 Omega = valuta community</div>
+        <div class="mini-pill">🏆 Rank & Badge</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY HUB -->
+  <section id="hub" class="section">
+    <h2>Community Hub</h2>
+    <p class="section-subtitle">Il tuo profilo, i tuoi Omega e i tuoi accessi — tutto qui.</p>
+
+    <div class="hub-grid">
+      <!-- CARD PROFILO -->
+      <div class="hub-card">
+        <div class="hub-card-top">
+          <div class="hub-title">Profilo Discord</div>
+          <div class="hub-tag">Live Identity</div>
+        </div>
+
+        <div class="hub-profile">
+          <img id="hubAvatar" class="hub-avatar" src="assets/img/logo.png" alt="Avatar">
+          <div class="hub-profile-meta">
+            <div id="hubName" class="hub-name">Accedi per vedere il profilo</div>
+            <div id="hubId" class="hub-id"></div>
+          </div>
+        </div>
+
+        <div class="hub-actions">
+          <a id="hubProfileBtn" class="button button-sm" href="profile.html" style="display:none;">Apri Profilo</a>
+          <a id="hubLoginBtn" class="button button-sm" href="javascript:void(0)">Login Discord</a>
+          <a id="hubLogoutBtn" class="button button-sm button-danger" href="javascript:void(0)" style="display:none;">Logout</a>
+        </div>
+      </div>
+
+      <section id="leaderboard" class="section">
+  <h2>Leaderboard Omega</h2>
+  <p class="section-subtitle">
+    I membri più attivi della community 💎
+  </p>
+
+  <div class="leaderboard-card">
+    <div id="leaderboardList"></div>
+  </div>
+</section>
+
+
+      <!-- CARD OMEGA -->
+      <div class="hub-card">
+        <div class="hub-card-top">
+          <div class="hub-title">Omega Points</div>
+          <div class="hub-tag">Progress</div>
+        </div>
+
+        <div class="omega-row">
+          <div class="omega-big" id="omegaValue">—</div>
+          <div class="omega-sub">Omega disponibili</div>
+        </div>
+
+        <div class="rank-row">
+          <div class="rank-pill" id="rankPill">🏆 Rank: —</div>
+          <div class="rank-pill" id="rankNext">➡️ Prossimo: —</div>
+        </div>
+
+        <div class="omega-progress">
+  <div class="progress-track">
+    <div id="omegaProgressFill" class="progress-fill"></div>
+  </div>
+  <div id="omegaProgressLabel" class="progress-label">—</div>
+</div>
+
+<div id="badgeRowPremium" class="badge-row-premium"></div>
+
+
+        <div class="hub-note">
+          Gli Omega si guadagnano con attività, eventi e community moments.
+        </div>
+      </div>
+
+      <!-- CARD QUICK ACTIONS -->
+      <div class="hub-card">
+        <div class="hub-card-top">
+          <div class="hub-title">Quick Actions</div>
+          <div class="hub-tag">Fast Access</div>
+        </div>
+
+        <div class="quick-list">
+          <a class="quick-item" href="https://discord.com/invite/w5uNknMb4m" target="_blank" rel="noreferrer">
+            💬 Entra nel Discord <span>→</span>
+          </a>
+          <a class="quick-item" href="https://streamelements.com/vitrio_ttv/tip" target="_blank" rel="noreferrer">
+            ❤️ Supporta il canale <span>→</span>
+          </a>
+          <a class="quick-item" href="#vod">
+            🎬 Vai alle Clip <span>→</span>
+          </a>
+        </div>
+
+        <!-- CARD SHOP -->
+<div class="hub-card">
+  <div class="hub-card-top">
+    <div class="hub-title">Omega Shop</div>
+    <div class="hub-tag">Rewards</div>
+  </div>
+
+  <div id="shopGrid" class="shop-grid"></div>
+
+  <div class="hub-note">
+    Le ricompense vengono riscattate direttamente in live o su Discord.
+  </div>
+</div>
+
+
+        <div class="hub-note">
+          (Shop & Rewards li rendiamo premium nel prossimo step.)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="live" class="section">
+    <h2>Live Streaming</h2>
+    <p class="section-subtitle">Direttamente da Twitch: <strong>vitrio_ttv</strong></p>
+
+    <div class="embed-wrap">
+      <iframe
+        src="https://player.twitch.tv/?channel=vitrio_ttv&parent=vitriotv.com"
+        frameborder="0"
+        allowfullscreen="true"
+        scrolling="no"
+        height="350"
+        width="600"></iframe>
+    </div>
+  </section>
+
+  <section id="schedule" class="section">
+    <h2>Programma Live</h2>
+    <p class="section-subtitle">Resta aggiornato su quando ci vediamo in chat.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>🎮 Tutti i giorni o quasi!</h3>
+        <p>21:00 - FiveM, e tanto altro!</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="social" class="section">
+    <h2>Seguimi sui Social</h2>
+    <p class="section-subtitle">Clip, annunci, meme e tutto quello che non vedi in live.</p>
+
+    <div class="social-links">
+      <a href="https://www.twitch.tv/vitrio_ttv/about" target="_blank" rel="noreferrer">Twitch</a>
+      <a href="https://www.instagram.com/_vitrio_/" target="_blank" rel="noreferrer">Instagram</a>
+      <a href="https://discord.com/invite/w5uNknMb4m" target="_blank" rel="noreferrer">Discord</a>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <h2>Chi Sono</h2>
+    <div class="about-row">
+      <img src="assets/img/logo.png" alt="avatar" class="about-img">
+      <p class="about-text">
+        Ehi sono <strong>Vitrio</strong>, un ragazzo vivace con tanta voglia di divertirmi e far divertire!
+        Qui trovi un po’ di tutto: Roleplay, giochi vari, momenti di pura follia e un sacco di good vibes.
+        Niente copioni, solo energia vera, risate e community, vieni a far parte della famiglia!.
+      </p>
+    </div>
+  </section>
+
+  <section id="donazioni" class="section">
+    <h2>Supporta il Canale</h2>
+    <p class="section-subtitle">Se ti diverti in live, puoi supportare il canale in tanti modi ❤️</p>
+    <div class="center">
+      <a href="https://streamelements.com/vitrio_ttv/tip" class="button" target="_blank" rel="noreferrer">Dona Ora</a>
+      <a href="https://www.twitch.tv/subs/vitrio_ttv" class="button" target="_blank" rel="noreferrer">Abbonati ora</a>
+      <p class="muted">Anche un semplice follow, un messaggio in chat o condividere la live fa la differenza!</p>
+    </div>
+  </section>
+
+  <section id="vod" class="section">
+    <h2>Ultime Clip & VOD</h2>
+    <p class="section-subtitle">Alcuni momenti che la chat non dimenticherà facilmente.</p>
+
+    <div class="embed-wrap">
+      <iframe
+        src="https://player.twitch.tv/?video=2640483889&parent=vitriotv.com"
+        frameborder="0"
+        allowfullscreen="true"
+        scrolling="no"
+        height="350"
+        width="600"></iframe>
+    </div>
+  </section>
+
+  <section id="contatti" class="section">
+    <h2>Contattami</h2>
+    <p class="section-subtitle">Collab, proposte, business o semplicemente un saluto.</p>
+
+    <form id="contactForm" class="contact-form">
+      <input type="text" name="nome" placeholder="Il tuo nome" required>
+      <input type="email" name="email" placeholder="La tua email" required>
+      <textarea name="messaggio" placeholder="Scrivi il tuo messaggio..." required></textarea>
+      <button type="submit">Invia</button>
+    </form>
+
+    <p class="muted center">Il form usa moduli criptografati sicuri, i tuoi dati sono al sicuro!.</p>
+  </section>
+
+  <section id="faq" class="section">
+    <h2>Domande Frequenti</h2>
+
+    <div>
+      <div class="faq-item">
+        <div class="faq-question">📅 Quando streammi di solito? <span>+</span></div>
+        <div class="faq-answer">
+          Streammo principalmente la sera e quando posso.
+          A volte però partono anche live extra a sorpresa, quindi tieni d'occhio i social!
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">🎮 Che giochi porti in live? <span>+</span></div>
+        <div class="faq-answer">
+          Porto principalmente FiveM, ma gioco anche a giochi più competitivi o tranquilli! Seguimi per scoprire quali.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">🤝 Posso giocare con te in live? <span>+</span></div>
+        <div class="faq-answer">
+          Certo! Durante le serate community puoi entrare in lobby, partecipare ai giochi e magari
+          finire anche in qualche clip epica.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">💸 Come posso supportare il canale? <span>+</span></div>
+        <div class="faq-answer">
+          Puoi supportare con follow, sub, donazioni, condividendo la live o invitando amici in
+          community. Ogni supporto, anche piccolo, è super apprezzato!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Vitrio - Tutti i diritti riservati
+  </footer>
+
+  <!-- UI -->
+  <button id="themeToggle" class="floating-btn">🌓 Tema</button>
+  <button id="backToTop" class="backtop-btn">↑ Top</button>
+  <canvas id="bgParticles"></canvas>
+
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/particles.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/index.js"></script>
+  <script type="module" src="assets/js/index-contact.js"></script>
+</body>
+</html>
