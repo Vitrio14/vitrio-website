@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Discord Login</title>
+</head>
+<body style="background:#0d0d12; color:white; font-family:Arial; text-align:center; padding-top:80px;">
+
+<h2>Accesso in corso...</h2>
+
+<script>
+
+// 1. Ottiene il ?code=... dalla URL
+const code = new URLSearchParams(window.location.search).get("code");
+
+if (!code) {
+    document.body.innerHTML = "<h2>Errore: nessun codice OAuth ricevuto.</h2>";
+    throw new Error("Missing OAuth code");
+}
+
+// 2. Invia il codice al backend per scambiarlo con un access_token
+fetch("https://api.vitriotv.com/discord/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code })
+})
+.then(res => res.json())
+.then(data => {
+
+    if (!data.access_token) {
+        document.body.innerHTML = "<h2>Errore nel token exchange.</h2>";
+        console.error(data);
+        return;
+    }
+
+    // 3. Salva il token valido per le API Discord
+    localStorage.setItem("discord_access_token", data.access_token);
+
+    // 4. Torna alla home
+    window.location.href = "index.html";
+})
+.catch(err => {
+    document.body.innerHTML = "<h2>Errore durante la comunicazione con il backend.</h2>";
+    console.error(err);
+});
+
+</script>
+
+</body>
+</html>
+
+

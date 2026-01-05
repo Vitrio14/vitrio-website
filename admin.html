@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Vitrio | Area Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  
+
+  <style>
+
+    html, body {
+  overflow-x: hidden !important;
+}
+
+
+    /* ----------------------------
+       BASE BODY + SFONDO SCURO
+    ----------------------------- */
+    body {
+      margin: 0;
+      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #f5f5ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+
+      /* SFONDO SCURO DEFAULT (uguale index) */
+      background: linear-gradient(180deg, #0d0d12, #1a1a24);
+    }
+
+    /* CANVAS SFONDO PARTICELLE */
+    #bgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+
+    /* ----------------------------
+       HEADER
+    ----------------------------- */
+    header {
+      padding: 16px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 10, 20, 0.9);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+    }
+
+    /* LOGO ANIMATO */
+    #adminLogo {
+      height: 52px;
+      filter: drop-shadow(0 0 6px #a970ff);
+      animation: logoFloat 3s ease-in-out infinite;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-area h1 {
+      font-size: 18px;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #ffd6ff;
+    }
+
+    .tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255,78,205,0.1);
+      border: 1px solid rgba(255,78,205,0.4);
+      color: #ffb0f0;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    #returnBtn,
+    #logoutBtn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(90deg, #ff4ecd, #a970ff);
+      color: white;
+      cursor: pointer;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      box-shadow: 0 0 12px rgba(0,0,0,0.6);
+      transition: 0.25s ease;
+      display: none;
+    }
+
+
+    /* ----------------------------
+       LOGIN & DASHBOARD
+    ----------------------------- */
+    main {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .panel {
+      background: rgba(15,15,30,0.9);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 18px 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    #loginView {
+      max-width: 400px;
+      margin: 80px auto;
+      text-align: center;
+    }
+
+    #loginView input {
+      width: 100%;
+      padding: 10px 12px;
+      margin: 6px 0;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #0b0b14;
+      color: white;
+    }
+
+    #loginBtn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(90deg, #a970ff, #ff4ecd);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    #dashboard { display: none; width: 100%; }
+
+
+    .stats {
+      flex: 1 1 260px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: radial-gradient(circle at top, rgba(169,112,255,0.3), transparent);
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .messages-panel {
+      flex: 3 1 400px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+
+    /* ----------------------------
+       CURSORE GLOW
+    ----------------------------- */
+    * { cursor: none !important; }
+
+    #cursorGlow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: rgba(169,112,255,0.55);
+      box-shadow: 0 0 18px rgba(169,112,255,0.9);
+      transform: translate(-50%, -50%);
+      transition: transform 0.07s linear;
+      z-index: 999999;
+    }
+
+
+    /* ---------------------------------------
+       🎨 TEMA CHIARO (Come index — FULL WHITE)
+    ---------------------------------------- */
+
+    /* BODY COMPLETAMENTE BIANCO */
+    body.light-theme {
+      background: #f5f5f7 !important;
+      color: #111;
+    }
+
+    /* CANVAS (sfondo particelle) diventa chiaro */
+    body.light-theme #bgCanvas {
+      background: #f5f5f7;
+    }
+
+    /* HEADER CHIARO */
+    body.light-theme header {
+      background: rgba(255,255,255,0.9);
+      border-bottom-color: #ccc;
+    }
+
+    /* PANNELLI CHIARI */
+    body.light-theme .panel {
+      background: rgba(255,255,255,0.95);
+      color: #111;
+      border-color: #ccc;
+    }
+
+    body.light-theme input {
+      background: #fff !important;
+      color: #111 !important;
+      border-color: #bbb !important;
+    }
+
+    body.light-theme .stat-card {
+      background: rgba(169,112,255,0.2);
+      border-color: #ccc;
+    }
+
+    body.light-theme .message-card {
+      background: rgba(255,255,255,0.9);
+      border-color: #ddd;
+    }
+
+    /* CURSORE CHIARO */
+    body.light-theme #cursorGlow {
+      background: rgba(169,112,255,0.7);
+      box-shadow: 0 0 15px rgba(169,112,255,1);
+    }
+
+    /* Footer identico all'index */
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 40px;
+  font-size: 13px;
+  width: 100%;
+}
+
+/* Footer sempre in fondo */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
+
+
+  </style>
+</head>
+
+<body>
+
+<!-- CANVAS SFONDO -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- CURSORE -->
+<div id="cursorGlow"></div>
+
+<!-- TEMA BUTTON -->
+<button id="themeToggle"
+  style="
+    position: fixed; bottom: 20px; right: 20px;
+    padding: 10px 16px; border-radius: 10px;
+    background: #a970ff; color: white;
+    border: none; cursor: pointer;
+    box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    z-index: 999999;
+  ">
+  🌓 Tema
+</button>
+
+
+
+<!-- HEADER -->
+<header>
+  <div class="logo-area">
+    <img src="logo.png" id="adminLogo" alt="Logo" />
+    <div>
+      <h1>Vitrio Admin</h1>
+      <span class="tag">Streamer Dashboard</span>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button id="returnBtn">Torna al sito</button>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</header>
+
+
+
+<!-- LOGIN -->
+<div id="loginView" class="panel">
+  <h2>Login Area Admin</h2>
+  <input id="email" type="email" placeholder="Email admin">
+  <input id="password" type="password" placeholder="Password">
+  <button id="loginBtn">Entra</button>
+  <div id="loginError"></div>
+</div>
+
+
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <main>
+    <section class="panel stats">
+      <div class="stat-card">
+        <div class="stat-label">Messaggi totali</div>
+        <div class="stat-value" id="statTotal">0</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Ultimo messaggio</div>
+        <div class="stat-value" id="statLast">-</div>
+      </div>
+    </section>
+
+    <section class="panel messages-panel">
+      <div class="messages-header">
+        <h2>Messaggi ricevuti</h2>
+        <button id="refreshBtn">Aggiorna</button>
+      </div>
+      <div id="messagesList"></div>
+    </section>
+  </main>
+</div>
+
+
+
+<!-- PARTICELLE BACKGROUND -->
+<script>
+  const canvas = document.getElementById("bgCanvas");
+  const ctx = canvas.getContext("2d");
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const particles = Array.from({ length: 70 }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 2 + 1,
+    s: Math.random() * 1 + 0.5
+  }));
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(169,112,255,0.5)';
+
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      p.y += p.s;
+      if (p.y > window.innerHeight) {
+        p.y = -5;
+        p.x = Math.random() * window.innerWidth;
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+
+
+
+<footer>
+  © 2025 Vitrio - Tutti i diritti riservati
+</footer>
+
+
+
+<!-- CURSORE -->
+<script>
+  const glow = document.getElementById("cursorGlow");
+  document.addEventListener("mousemove", (e) => {
+    glow.style.left = e.clientX + "px";
+    glow.style.top = e.clientY + "px";
+  });
+</script>
+
+
+
+<!-- THEME SWITCH -->
+<script>
+  const themeToggle = document.getElementById("themeToggle");
+
+  // Carica preferenza
+  if (localStorage.getItem("theme") === "light")
+    document.body.classList.add("light-theme");
+
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("light-theme");
+
+    if (document.body.classList.contains("light-theme"))
+      localStorage.setItem("theme", "light");
+    else
+      localStorage.setItem("theme", "dark");
+  });
+</script>
+
+
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCosgHwGCK4mqS7qz9ZCX0ctR17I1PLPIQ",
+    authDomain: "vitriottv.firebaseapp.com",
+    projectId: "vitriottv",
+    storageBucket: "vitriottv.firebasestorage.app",
+    messagingSenderId: "159136613568",
+    appId: "1:159136613568:web:62971549847db867551925",
+    measurementId: "G-20CWGK8ZL6"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  const loginView = document.getElementById("loginView");
+  const dashboard = document.getElementById("dashboard");
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const returnBtn = document.getElementById("returnBtn");
+  const loginError = document.getElementById("loginError");
+  const messagesList = document.getElementById("messagesList");
+  const refreshBtn = document.getElementById("refreshBtn");
+  const statTotal = document.getElementById("statTotal");
+  const statLast = document.getElementById("statLast");
+
+  loginBtn.addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    loginError.textContent = "";
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      loginError.textContent = "Login fallito: " + err.message;
+    }
+  });
+
+  logoutBtn.addEventListener("click", async () => { await signOut(auth); });
+
+  returnBtn.addEventListener("click", () => { window.location.href = "index.html"; });
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      loginView.style.display = "none";
+      dashboard.style.display = "block";
+      logoutBtn.style.display = "inline-block";
+      returnBtn.style.display = "inline-block";
+      await loadMessages();
+    } else {
+      loginView.style.display = "block";
+      dashboard.style.display = "none";
+      logoutBtn.style.display = "none";
+      returnBtn.style.display = "none";
+      messagesList.innerHTML = "";
+    }
+  });
+
+  async function loadMessages() {
+    messagesList.innerHTML = "<p style='opacity:0.7;'>Caricamento...</p>";
+
+    const q = query(collection(db, "messaggi"), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+
+    messagesList.innerHTML = "";
+    let count = 0;
+    let last = "-";
+
+    snapshot.forEach((doc) => {
+      count++;
+      const d = doc.data();
+
+      let date = "-";
+      if (d.createdAt?.seconds) {
+        const real = new Date(d.createdAt.seconds * 1000);
+        date = real.toLocaleString();
+        if (count === 1) last = date;
+      }
+
+      const div = document.createElement("div");
+      div.className = "message-card";
+      div.innerHTML = `
+        <div class="message-header">
+          <div>
+            <div class="message-name">${d.nome}</div>
+            <div class="message-email">${d.email}</div>
+          </div>
+          <div class="message-date">${date}</div>
+        </div>
+        <div class="message-body">${d.messaggio.replace(/\n/g, "<br>")}</div>
+      `;
+      messagesList.appendChild(div);
+    });
+
+    statTotal.textContent = count;
+    statLast.textContent = last;
+  }
+
+  refreshBtn.addEventListener("click", loadMessages);
+</script>
+
+</body>
+</html>
