@@ -890,8 +890,88 @@ const url =
   });
 </script>
 
+  <div id="cookie-banner" class="cookie-box">
+  <div class="cookie-content">
+    <p>Questo sito utilizza i cookie per offrirti un'esperienza migliore. 
+       Leggi la nostra <a href="cookie-policy.html">Cookie Policy</a>.</p>
+    <div class="cookie-actions">
+      <button id="cookie-accept" class="c-btn accept">Accetta tutto</button>
+      <button id="cookie-decline" class="c-btn decline">Rifiuta</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cookie-box {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 450px;
+    background: rgba(13, 13, 18, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(169, 112, 255, 0.4);
+    border-radius: 20px;
+    padding: 20px;
+    z-index: 10000;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    display: none; /* Inizialmente nascosto */
+    animation: slideUp 0.5s ease-out;
+  }
+  @keyframes slideUp {
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
+  }
+  .cookie-content p {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+  }
+  .cookie-content a { color: #a970ff; text-decoration: none; font-weight: bold; }
+  .cookie-actions { display: flex; gap: 10px; justify-content: center; }
+  .c-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    font-family: 'Poppins', sans-serif;
+  }
+  .accept { background: #a970ff; color: white; }
+  .accept:hover { background: #8a5cd6; transform: scale(1.05); }
+  .decline { background: rgba(255,255,255,0.05); color: #ccc; }
+  .decline:hover { background: rgba(255,255,255,0.1); }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const banner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("cookie-accept");
+    const declineBtn = document.getElementById("cookie-decline");
+
+    // Mostra il banner solo se non è stata già fatta una scelta
+    if (!localStorage.getItem("vitrio_cookies")) {
+      setTimeout(() => { banner.style.display = "block"; }, 1000);
+    }
+
+    acceptBtn.addEventListener("click", () => {
+      localStorage.setItem("vitrio_cookies", "accepted");
+      banner.style.display = "none";
+    });
+
+    declineBtn.addEventListener("click", () => {
+      localStorage.setItem("vitrio_cookies", "declined");
+      banner.style.display = "none";
+    });
+  });
+</script>
+
 </body>
 </html>
+
 
 
 
