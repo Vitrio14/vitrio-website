@@ -536,9 +536,10 @@
   <h2>Ultime Clip & VOD</h2>
   <p class="section-subtitle">Scorri per vedere i momenti migliori della chat!</p>
   
-  <div class="clip-carousel-container">
-    <div class="clip-carousel">
+  <div class="carousel-wrapper">
+    <button class="nav-btn prev" onclick="scrollCarousel(-350)">&#10094;</button>
 
+    <div class="clip-carousel" id="twitch-carousel">
       <div class="clip-item">
         <iframe
           src="https://clips.twitch.tv/embed?clip=PoorSuccessfulCobblerTheThing-lMiVZxG57XmUCJuj&parent=vitriotv.com"
@@ -552,42 +553,39 @@
           frameborder="0" allowfullscreen="true" scrolling="no" height="300" width="500">
         </iframe>
       </div>
-
+      
       </div>
+
+    <button class="nav-btn next" onclick="scrollCarousel(350)">&#10095;</button>
   </div>
 
   <div style="margin-top: 30px; text-align: center;">
     <a href="https://www.twitch.tv/vitrio_ttv" target="_blank" rel="noopener noreferrer" 
-       style="display: inline-flex; align-items: center; background-color: #9146FF; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 10px rgba(145, 70, 255, 0.3);">
+       class="twitch-btn">
       SCOPRI IL RESTO SU TWITCH!
     </a>
   </div>
 
   <style>
-    .clip-carousel-container {
-      width: 100%;
-      overflow: hidden;
-      padding: 20px 0;
+    .carousel-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .clip-carousel {
       display: flex;
       overflow-x: auto;
-      scroll-snap-type: x mandatory; /* Effetto calamita sullo scorrimento */
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
       gap: 20px;
-      padding: 10px 20px;
-      scrollbar-width: thin; /* Per Firefox */
-      scrollbar-color: #a970ff transparent;
+      padding: 20px;
+      scrollbar-width: none; /* Nasconde scrollbar su Firefox */
     }
 
-    /* Scrollbar personalizzata per Chrome/Safari */
-    .clip-carousel::-webkit-scrollbar {
-      height: 8px;
-    }
-    .clip-carousel::-webkit-scrollbar-thumb {
-      background: #a970ff;
-      border-radius: 10px;
-    }
+    .clip-carousel::-webkit-scrollbar { display: none; } /* Nasconde scrollbar su Chrome */
 
     .clip-item {
       flex: 0 0 auto;
@@ -596,10 +594,55 @@
 
     .clip-item iframe {
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(169, 112, 255, 0.4);
-      max-width: 90vw; /* Evita che la clip esca dallo schermo su mobile */
+      box-shadow: 0 0 15px rgba(169, 112, 255, 0.3);
+      max-width: 85vw;
+    }
+
+    /* Stile Freccette */
+    .nav-btn {
+      background: rgba(145, 70, 255, 0.2);
+      border: 2px solid #9146FF;
+      color: white;
+      font-size: 24px;
+      padding: 15px 20px;
+      cursor: pointer;
+      border-radius: 50%;
+      z-index: 10;
+      transition: 0.3s;
+      margin: 0 10px;
+    }
+
+    .nav-btn:hover {
+      background: #9146FF;
+      box-shadow: 0 0 20px #a970ff;
+    }
+
+    .twitch-btn {
+      display: inline-flex;
+      align-items: center;
+      background-color: #9146FF;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    /* Responsive: su cellulare nascondiamo le frecce per lasciare spazio al touch */
+    @media (max-width: 768px) {
+      .nav-btn { display: none; }
     }
   </style>
+
+  <script>
+    function scrollCarousel(distance) {
+      document.getElementById('twitch-carousel').scrollBy({
+        left: distance,
+        behavior: 'smooth'
+      });
+    }
+  </script>
 </section>
 
   <section id="contatti" class="section">
@@ -1027,6 +1070,7 @@ const url =
 
 </body>
 </html>
+
 
 
 
